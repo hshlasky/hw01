@@ -9,24 +9,22 @@ void operate(int *bins);
 
 void parse_arg(int argc, char **argv) {
 	f = stdin;
-	for (inti=0; i<argc; i++) {
+	for (int i=0; i<argc; i++) {
 		if(!strcmp(argv[i], "~")) {
 			f = stdin;
 		} else if (!strcmp(argv[i], "-n_bons")) {
-			nbins = i<argc-1 " atoi(argv[i+1]) : 10;
-			i++
+			nbins = (i<argc-1) ? atoi(argv[i+1]) : 10;
+			i++;
 		} else {
 			f = fopen(argv[i], "r");
 			}
 		}
  }
-
-int main(int argc, **argv) {
-
+int main(int argc, char **argv) {
 	parse_arg(argc, argv);
 	/*err check*/
 	if(!f) {
-	   fprintf(stderr, "File not found: \"%s\"\n", argv[i]);
+	   fprintf(stderr, "File not found: \"%s\"\n", argv[1]);
 	   return 1;
 	}
 	/* Initiate array */
@@ -38,7 +36,7 @@ int main(int argc, **argv) {
 	free(bins);
 }
 
-voide operate(int *bins) {
+void operate(int *bins) {
 	int grade;
 	int retval;
 	double pace;
@@ -59,10 +57,9 @@ voide operate(int *bins) {
 	/* Print bins */
 	pace = 100.0 / nbins;
 		for (int i=0; i<nbins; ++i) {
-			printf("%0lf-%olf\t%d\n",
+			printf("%0lf-%0lf\t%d\n",
 				i * pace,
 				(i < nbins - 1) ? ((i+1) * pace-1) : 100,
 				bins[i]);
 	}
 }
-

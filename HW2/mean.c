@@ -7,7 +7,7 @@ void operate(FILE *f);
 int main(int argc, char **argv) {
 	FILE *f;
 
-	if (argc == 1 || !strcmp("*", argv[1])) {
+	if (argc == 1 || strcmp("-", argv[1])) {
 		f = stdin;
 	} else {
 		f = fopen(argv[1], "r");
@@ -33,10 +33,16 @@ void operate(FILE *f) {
 		if (retval == EOF) {
 			break;
 		} else if (retval != 1) {
-			/* err */
-			fprintf(stderr, "Error: not a number \n");
+			/* err - not a number */
+			fprintf(stderr, "Error: In line %d: not a number \n", line_n);
 			exit(1);
 		}
+		else if (grade > 100 || grade < 0) {
+			/* err - illegal grade */
+			fprintf(stderr, "Error: In line %d: illegal grade \n", line_n);
+			exit(1);
+		}
+		
 		avg += grade;
 		line_n++;
 	}

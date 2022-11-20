@@ -21,7 +21,7 @@ void operate(int *bins);
 void parse_arg(int argc, char **argv) {
 	f = stdin;
 	for (int i=0; i<argc; i++) {
-		if(!strcmp(argv[i], "-")) {
+		if(argc == 1 || !strcmp(argv[i], "-")) {
 			f = stdin;
 		} else if (!strcmp(argv[i], "-n_bins")) {
 			nbins = (i<argc-1) ? atoi(argv[i+1]) : 10;
@@ -69,7 +69,7 @@ void operate(int *bins) {
 	/* Print bins */
 	pace = 100.0 / nbins;
 		for (int i=0; i<nbins; ++i) {
-			printf("%0lf-%0lf\t%d\n",
+			printf("%.0lf-%.0lf\t%d\n",
 				i * pace,
 				(i < nbins - 1) ? ((i+1) * pace-1) : 100,
 				bins[i]);

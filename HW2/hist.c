@@ -10,9 +10,9 @@ void operate(int *bins);
 void parse_arg(int argc, char **argv) {
 	f = stdin;
 	for (int i=0; i<argc; i++) {
-		if(!strcmp(argv[i], "~")) {
+		if(!strcmp(argv[i], "-")) {
 			f = stdin;
-		} else if (!strcmp(argv[i], "-n_bons")) {
+		} else if (!strcmp(argv[i], "-n_bins")) {
 			nbins = (i<argc-1) ? atoi(argv[i+1]) : 10;
 			i++;
 		} else {

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+enum { MIN_GRADE=0, MAX_GRADE=100 };
 
 void operate(FILE *f);
 
@@ -22,9 +23,14 @@ int main(int argc, char **argv) {
 
 
 void operate(FILE *f) {
-  int min = 100;
-  int line_n = 0;
-  while (1) {
+    int min;
+    int grade;
+    int line_n;
+    int retval;
+    
+    min = MAX_GRADE+1;
+    line_n = 0;
+    while (1) {
 		retval = fscanf(f, "%d", &grade);
 		if (retval == EOF) {
 			break;
@@ -33,8 +39,22 @@ void operate(FILE *f) {
 			fprintf(stderr, "Error: In line %d: not a number \n", line_n+1);
 			exit(1);
 		}
-		else if (grade > 100 || grade < 0) {
+		else if (grade > MAX_GRADE|| grade < MIN_GRADE) {
 			/* err - illegal grade */
 			fprintf(stderr, "Error: In line %d: illegal grade \n", line_n+1);
 			exit(1);
 		}
+		else if (grade < min) {
+		    min = grade;
+		}
+		line_n++;
+    }
+	
+	if (min > MAX_GRADE) {
+	    printf ("No grades inputed.");
+	}
+	
+	else {
+    	printf ("%d", min);
+	}
+}

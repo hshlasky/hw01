@@ -5,8 +5,19 @@
 static FILE *f;
 static int nbins = 10;
 
+/**
+ * @brief Split grades into n_bins.
+ * @param bins Pointer to the array that holds the histogram.
+ * @note Prints the histogram to stdout.
+ */
 void operate(int *bins);
 
+/**
+ * @brief Accepts inputs from file or stdin and defines the number of bins (default 10).
+ * @param argc Number of inputs.
+ * @param argc Inputs as strings.
+ * @note If .
+ */
 void parse_arg(int argc, char **argv) {
 	f = stdin;
 	for (int i=0; i<argc; i++) {
@@ -37,6 +48,7 @@ int main(int argc, char **argv) {
 }
 
 void operate(int *bins) {
+
 	int grade;
 	int retval;
 	double pace;

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+enum { MIN_GRADE=0, MAX_GRADE=100 };
 
 void operate(FILE *f);
 
@@ -37,7 +38,7 @@ void operate(FILE *f) {
 			fprintf(stderr, "Error: In line %d: not a number \n", line_n);
 			exit(1);
 		}
-		else if (grade > 100 || grade < 0) {
+		else if (grade > MAX_GRADE || grade < MIN_GRADE) {
 			/* err - illegal grade */
 			fprintf(stderr, "Error: In line %d: illegal grade \n", line_n);
 			exit(1);
@@ -46,5 +47,12 @@ void operate(FILE *f) {
 		avg += grade;
 		line_n++;
 	}
-	printf("%2lf\n", avg / line_n);
+	
+    if (line_n == 0) {
+        printf ("No grade inputed.");
+	}
+	
+    else {
+        printf("%.2lf\n", avg / line_n);
+	}
 }

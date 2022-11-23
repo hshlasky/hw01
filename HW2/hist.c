@@ -64,7 +64,11 @@ void operate(int *bins) {
 		}
 		/* Find bins */
 		int n = grade / (100 / nbins);
-		bins[n]++;
+		if (n == nbins) {
+			bins[n]++;
+		} else if (n < nbins) {
+			bins[n]++;
+		)
 	}
 	/* Print bins */
 	pace = 100.0 / nbins;

@@ -27,7 +27,6 @@ void operate(FILE *f) {
 	int students;
 	int retval;
 	int grade;
-	int line_n;
 	
 	counter = 0;
 	students = 0;

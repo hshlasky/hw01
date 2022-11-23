@@ -42,19 +42,15 @@ void operate(FILE *f) {
 		students++;
 	}
   	int i = 0;
-	while(1) {
+	while(counter < (students + 1) / 2)) {
 		counter += grades[i];
-		if (counter >= (students + 1) / 2) {
-			grade = i;
-			break;
-		}
 		i++;
 	}
 
 	if (counter == 0) {
 		printf ("No grades inputed.\n");
 	} else {
-		printf ("%d\n", grade);
+		printf ("%d\n", i;
 	}
 
 	fclose(f);

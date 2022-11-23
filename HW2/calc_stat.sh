@@ -30,5 +30,5 @@ median=$(./median.exe $args.txt)
 echo -e "$mean\t$median\t$min\t$max" > statistics.txt
 
 hist=$(./hist.exe $args.txt -n_bins 100)
-pass_percent=100 //need to change
+pass_percent=100 #need to change
 echo "$pass_percent" >> statistics.txt

@@ -23,18 +23,26 @@ int main(int argc, char **argv) {
 
 void operate(FILE *f) {
 	int grades[MAX_GRADE+1] = {0};
-	int counter = 0;
-	int students = 0;
+	int counter;
+	int students;
 	int retval;
 	int grade;
+	int line_n;
+	
+	counter = 0;
+	students = 0;
 	
 	while (1) {
 		retval = fscanf(f, "%d", &grade);
 		if (retval == EOF) {
 			break;
 		} else if (retval != 1) {
-			/* err */
+			/* err - not a number */
 			fprintf(stderr, "Error: not a number\n");
+			exit(1);
+		} else if (grade > MAX_GRADE || grade < MIN_GRADE) {
+			/* err - illegal grade */
+			fprintf(stderr, "Error: In line %d: illegal grade \n", students+1);
 			exit(1);
 		} else {
 			grades[grade]++;
@@ -46,11 +54,11 @@ void operate(FILE *f) {
 		counter += grades[i];
 		i++;
 	}
-
+	
 	if (counter == 0) {
 		printf ("No grades inputed.\n");
 	} else {
-		printf ("%d\n", i);
+		printf ("%d\n", i-1);
 	}
 
 	fclose(f);

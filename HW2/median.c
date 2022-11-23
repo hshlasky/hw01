@@ -37,7 +37,7 @@ void operate(FILE *f) {
 			break;
 		} else if (retval != 1) {
 			/* err - not a number */
-			fprintf(stderr, "Error: not a number\n");
+			fprintf(stderr, "Error: In line %d: not a number\n", students+1);
 			exit(1);
 		} else if (grade > MAX_GRADE || grade < MIN_GRADE) {
 			/* err - illegal grade */

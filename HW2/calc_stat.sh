@@ -31,4 +31,4 @@ echo -e "$mean\t$median\t$min\t$max" > statistics.txt
 
 hist=$(./hist.exe $args.txt -n_bins 100)
 
-echo -e "\t$pass_percent" >> statistics.txt
+echo "$pass_percent" >> statistics.txt

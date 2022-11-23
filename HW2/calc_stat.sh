@@ -13,3 +13,22 @@ fi
 
 [ -d ""$args"_stat" ] && rm -r ""$args"_stat"
 mkdir ""$args"_stat"
+
+gcc -g -Wall hist.c -o hist.exe
+./hist.exe $args.txt > "$args"_stat/histogram.txt
+
+gcc -g -Wall min.c -o min.exe
+gcc -g -Wall max.c -o max.exe
+gcc -g -Wall mean.c -o mean.exe
+gcc -g -Wall median.c -o median.exe
+
+min=$(./min.exe $args.txt)
+max=$(./max.exe $args.txt)
+mean=$(./mean.exe $args.txt)
+median=$(./median.exe $args.txt)
+
+echo -e "$mean\t$median\t$min\t$max" > statistics.txt
+
+hist=$(./hist.exe $args.txt -n_bins 100)
+
+echo -e "\t$pass_percent" >> statistics.txt

@@ -22,13 +22,39 @@ int main(int argc, char **argv) {
 }
 
 void operate(FILE *f) {
-	int grade;
+	int grades[MAX_GRADE] = {0};
+	int counter = 0;
+	int students = 0;
 	int retval;
-	double avg;
-	int line_n;
+	int grade;
+	
+	while (1) {
+		retval = fscanf(f, "%d", &grade);
+		if (retval == EOF) {
+			break;
+		} else if (retval != 1) {
+			/* err */
+			fprintf(stderr, "Error: not a number\n");
+			exit(1);
+		} else {
+			grades[grade]++;
+		}
+		students++;
+	}
   
-  
-  
-  
-  
+	for (int i = 0;i < MAX_GRADE;i++) {
+		counter += grades[i];
+		if (counter >= (students + 1) / 2) {
+			grade = i;
+			break;
+		}
+	}
+
+	if (counter == 0) {
+		printf ("No grades inputed.\n");
+	} else {
+		printf ("%d\n", grade);
+	}
+
+	fclose(f);
 }

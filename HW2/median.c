@@ -22,7 +22,7 @@ int main(int argc, char **argv) {
 }
 
 void operate(FILE *f) {
-	int grades[MAX_GRADE] = {0};
+	int grades[MAX_GRADE+1] = {0};
 	int counter = 0;
 	int students = 0;
 	int retval;
@@ -41,13 +41,14 @@ void operate(FILE *f) {
 		}
 		students++;
 	}
-  
-	for (int i = 0;i < MAX_GRADE;i++) {
+  	int i = 0;
+	while(1) {
 		counter += grades[i];
 		if (counter >= (students + 1) / 2) {
 			grade = i;
 			break;
 		}
+		i++;
 	}
 
 	if (counter == 0) {

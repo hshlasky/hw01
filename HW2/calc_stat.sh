@@ -30,5 +30,14 @@ median=$(./median.exe $args.txt)
 echo -e "$mean\t$median\t$min\t$max" > statistics.txt
 
 hist=$(./hist.exe $args.txt -n_bins 100)
-pass_percent=100 #need to change
+students=$(wc -l < $args.txt)
+passed=0
+grade=0
+while read line; do
+	arr=($line)
+	[[ $grade -gt 54 ]] && (( passed=$passed+${arr[1]} ))
+	(( grade=$grade+1 ))
+done < <(echo "$hist")
+
+(( pass_percent=100*$passed/$students ))
 echo "$pass_percent" >> statistics.txt

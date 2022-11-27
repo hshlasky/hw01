@@ -41,13 +41,12 @@ void operate(FILE *f) {
     min = MAX_GRADE+1;
     line_n = 0;
     
-	// scan all the grade, check validity, and save the min grade 
+   // scan all the grade, check validity, and save the min grade 
     while (1) {
 		retval = fscanf(f, "%d", &grade);
 		if (retval == EOF) {
-			break;
-		} else if (retval != 1) {
-			/* check error - not a number */
+			break;		
+		} else if (retval != 1) {  	/* check error - not a number */
 			fprintf(stderr, "Error: In line %d: not a number \n", line_n+1);
 			exit(1);
 		}

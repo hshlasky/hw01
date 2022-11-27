@@ -52,7 +52,9 @@ void operate(int *bins) {
 	int grade;
 	int retval;
 	double pace;
+	
 
+	pace = 100.0 / nbins;
 	while (1) {
 		retval = fscanf(f, "%d", &grade);
 		if (retval == EOF) {
@@ -63,19 +65,19 @@ void operate(int *bins) {
 		exit(1);
 		}
 		/* Find bins */
-		int n = grade / (100 / nbins);
+		int n = grade / pace;
 		if (n == nbins) {
-			bins[n]++;
+			bins[n-1]++;
 		} else if (n < nbins) {
 			bins[n]++;
 		}
 	}
 	/* Print bins */
-	pace = 100.0 / nbins;
-		for (int i=0; i<nbins; ++i) {
-			printf("%.0lf-%.0lf\t%d\n",
-				i * pace,
-				(i < nbins - 1) ? ((i+1) * pace-1) : 100,
-				bins[i]);
+
+	for (int i=0; i<nbins; ++i) {
+		printf("%.0lf-%.0lf\t%d\n",
+			i * pace,
+			(i < nbins - 1) ? ((i+1) * pace-1) : 100,
+			bins[i]);
 	}
 }

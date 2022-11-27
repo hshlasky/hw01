@@ -48,11 +48,13 @@ void operate(FILE *f) {
 			break;		
 		} else if (retval != 1) {  	/* check error - not a number */
 			fprintf(stderr, "Error: In line %d: not a number \n", line_n+1);
+			fclose(f);
 			exit(1);
 		
 		/* check error - grade range */
 		} else if (grade > MAX_GRADE|| grade < MIN_GRADE) { 
 			fprintf(stderr, "Error: In line %d: illegal grade \n", line_n+1);
+			fclose(f);
 			exit(1);
 		
 		/* check if this minimum grade */
@@ -68,4 +70,6 @@ void operate(FILE *f) {
 	} else {
     	printf ("%d", min);
 	}
+	
+	fclose(f);
 }

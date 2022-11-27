@@ -5,6 +5,12 @@ enum { MIN_GRADE=0, MAX_GRADE=100 };
 
 void operate(FILE *f);
 
+/**
+ * @brief Accepts inputs from file or stdin.
+ * @param argc Number of inputs.
+ * @param argc Inputs as strings.
+ * @note ?? .
+ */
 int main(int argc, char **argv) {
 	FILE *f;
 
@@ -21,6 +27,12 @@ int main(int argc, char **argv) {
 	operate(f);
 }
 
+/**
+ * @brief Found the minimum grade.
+ * @param *f file pointer.
+ * @param argc Inputs as strings.
+ * @note ?? .
+ */
 
 void operate(FILE *f) {
     int min;
@@ -30,26 +42,30 @@ void operate(FILE *f) {
     
     min = MAX_GRADE+1;
     line_n = 0;
+    
+	// scan all the grade, check validity, and save the min grade 
     while (1) {
 		retval = fscanf(f, "%d", &grade);
 		if (retval == EOF) {
 			break;
 		} else if (retval != 1) {
-			/* err - not a number */
+			/* check error - not a number */
 			fprintf(stderr, "Error: In line %d: not a number \n", line_n+1);
 			exit(1);
 		}
+			/* check error - grade range */
 		else if (grade > MAX_GRADE|| grade < MIN_GRADE) {
-			/* err - illegal grade */
 			fprintf(stderr, "Error: In line %d: illegal grade \n", line_n+1);
 			exit(1);
 		}
+		/* check if this minimum grade */
 		else if (grade < min) {
 		    min = grade;
 		}
 		line_n++;
     }
-	
+	/* if not grade input the minimum will be upper
+		the max legal grade */
 	if (min > MAX_GRADE) {
 	    printf ("No grades inputed.");
 	}

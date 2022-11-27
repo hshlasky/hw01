@@ -51,26 +51,24 @@ void operate(FILE *f) {
 		} else if (retval != 1) {
 			fprintf(stderr, "Error: In line %d: not a number \n", line_n+1);
 			exit(1);
-		}
+		
 		/* check error - grade range */
-		else if (grade > MAX_GRADE|| grade < MIN_GRADE) {
+		} else if (grade > MAX_GRADE|| grade < MIN_GRADE) {
 			fprintf(stderr, "Error: In line %d: illegal grade \n", line_n+1);
 			exit(1);
-		}
+		
 		/* check if this minimum grade */
-		else if (grade > max) {
+		} else if (grade > max) {
 		    max = grade;
 		}
 		line_n++;
     }
 	
 	/* if not grade input the minimum will be under
-		the min legal grade */
+	the min legal grade */
 	if (max < MIN_GRADE) {
 	    printf ("No grades inputed.");
-	}
-	
-	else {
+	} else {
     	printf ("%d", max);
 	}
 }

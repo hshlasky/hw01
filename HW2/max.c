@@ -9,7 +9,6 @@ void operate(FILE *f);
  * @brief Accepts inputs from file or stdin.
  * @param argc Number of inputs.
  * @param argc Inputs as strings.
- * @note ?? .
  */
 int main(int argc, char **argv) {
 	FILE *f;
@@ -30,7 +29,7 @@ int main(int argc, char **argv) {
 /**
  * @brief Found the maximum grade.
  * @param *f file pointer.
- * @note ?? .
+ * @note Prints max to stdout.
  */
 void operate(FILE *f) {
     int max;

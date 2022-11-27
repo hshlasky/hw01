@@ -19,7 +19,7 @@ int main(int argc, char **argv) {
 	} else {
 		f = fopen(argv[1], "r");
 	}
-	/* err check */
+	/* error file check */
 	if (!f ) {
 		fprintf(stderr,"File note found: \"%s\"\n", argv[1]);
 		return 1;

@@ -30,10 +30,8 @@ int main(int argc, char **argv) {
 /**
  * @brief Found the minimum grade.
  * @param *f file pointer.
- * @param argc Inputs as strings.
  * @note ?? .
  */
-
 void operate(FILE *f) {
     int min;
     int grade;

@@ -54,9 +54,9 @@ void operate(FILE *f) {
 		} else if (grade > MAX_GRADE|| grade < MIN_GRADE) { 
 			fprintf(stderr, "Error: In line %d: illegal grade \n", line_n+1);
 			exit(1);
-		}
+		
 		/* check if this minimum grade */
-		else if (grade < min) {
+		} else if (grade < min) {
 		    min = grade;
 		}
 		line_n++;
@@ -65,9 +65,7 @@ void operate(FILE *f) {
 	the max legal grade */
 	if (min > MAX_GRADE) {
 	    printf ("No grades inputed.");
-	}
-	
-	else {
+	} else {
     	printf ("%d", min);
 	}
 }

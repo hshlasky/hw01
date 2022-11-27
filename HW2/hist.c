@@ -68,7 +68,7 @@ void operate(int *bins) {
 			bins[n]++;
 		} else if (n < nbins) {
 			bins[n]++;
-		)
+		}
 	}
 	/* Print bins */
 	pace = 100.0 / nbins;

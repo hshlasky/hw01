@@ -400,7 +400,7 @@ int grades_print_student(struct grades *grades, int id){
 		}
 	}
 	
-	
+	printf("\n");
 	return 0;
 }
 
@@ -428,7 +428,6 @@ int grades_print_all(struct grades *grades){
 		if(grades_print_student(grades,((st_grades_t*)list_get(student_itr))->id)) {
 			return 1;
 		}
-		printf("\n");
 		student_itr=list_next(student_itr);
 	}
 	

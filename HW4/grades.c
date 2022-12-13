@@ -288,8 +288,7 @@ int grades_add_grade(struct grades *grades,
 	cs_new->cs_grade = grade;
 
 	int success = list_push_back(student->st_courses, (void*)cs_new);
-	free (cs_new->cs_name);
-	free (cs_new);
+	course_destroy((void*)cs_new);
 
 	return success;
  }
@@ -396,7 +395,7 @@ int grades_print_student(struct grades *grades, int id){
 		grade_itr=list_next(grade_itr);
 		}
 	}
-	free(grade_itr);//check	
+
 	printf("\n");
 	return 0;
 }

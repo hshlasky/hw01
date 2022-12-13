@@ -103,13 +103,13 @@ int student_clone (void* element, void** output){
 	//tmp first iterator ptr
 	struct iterator* st_temp_cs_it=list_begin(st_temp_cs);
 	
+	course_t *cs_node_copy=NULL;
 	while (st_temp_cs_it) {
-		course_t cs_node_copy;
-		course_clone(st_temp_cs_it,(void**)&cs_node_copy); //???
-		list_push_back(st_out->st_courses, &cs_node_copy);
+		course_clone(st_temp_cs_it,(void**)cs_node_copy); //???
+		list_push_back(st_out->st_courses, cs_node_copy);
 		st_temp_cs_it=list_next(st_temp_cs_it);
 	}
-	
+
 	*output = st_out;
 	return 0;
 }
@@ -158,16 +158,6 @@ void grades_destroy(struct grades *grades){
  * the same "id" already exists in "grades"
  */
  st_grades_t* find_student(struct grades *grades, int id) { 
-/*	struct iterator* st_itr = list_begin(grades->grades_list);
-	while(st_itr) {
-		if(id == ((st_grades_t*)list_get(st_itr))->id) {
-			return (st_grades_t*)list_get(st_itr);
-		}
-		st_itr=list_next(st_itr);
-	}
-
-	return NULL;
-*/
 	 if (grades == NULL){
 		return NULL;
 	}
@@ -218,21 +208,24 @@ int grades_add_student(struct grades *grades, const char *name, int id){
 	st_new->id=id;
 	
 	st_new->name = 
-		(char*)malloc(sizeof(char)*(strlen(name)+1));
+		(char*)malloc(sizeof(char)*(strlen(name))+1);
 	if (!(st_new->name)){ //check if malloc didn't work.
 		free (st_new);
 		return 1;
-	}
+	}	
 	strcpy(st_new->name, name);
-	
+
 	st_new->st_courses=list_init (course_clone, course_destroy);
 	if (!(st_new->st_courses)) { 
 		free (st_new->name);
 		free (st_new);
 		return 1;
 	}
-	return list_push_back(grades->grades_list, (void*)st_new);
+	
+	int success = list_push_back(grades->grades_list, (void*)st_new);
 
+	student_destroy ((void*)st_new);
+	return success;
 }
 
 /**
@@ -293,9 +286,12 @@ int grades_add_grade(struct grades *grades,
 		
 	//update course_grade
 	cs_new->cs_grade = grade;
-	//???
-	return list_push_back(student->st_courses, (void*)cs_new);
-					
+
+	int success = list_push_back(student->st_courses, (void*)cs_new);
+	free (cs_new->cs_name);
+	free (cs_new);
+
+	return success;
  }
 
 /**
@@ -378,6 +374,7 @@ int grades_print_student(struct grades *grades, int id){
 	st_grades_t* student = find_student(grades,id);
 	//check if "id" doesn't exist in "grades" (ptr=null)
 	if(!(student)) {
+		free(student);
 		return 1;
 	}
 	
@@ -399,7 +396,7 @@ int grades_print_student(struct grades *grades, int id){
 		grade_itr=list_next(grade_itr);
 		}
 	}
-	
+	free(grade_itr);//check	
 	printf("\n");
 	return 0;
 }

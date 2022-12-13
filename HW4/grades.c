@@ -21,7 +21,12 @@ typedef struct grades{
 }grades_t;
 
 
-
+/**
+ * @brief cloning course func.
+ * @param element course struct to copy
+ * @param output address  of cloned course struct
+ * @returns 0 on success, 1 on failed
+*/
 int course_clone (void* element, void** output){
 	course_t* cs_temp = (course_t*)element;
 	
@@ -50,15 +55,15 @@ int course_clone (void* element, void** output){
 	return 0;
 }
 
-
+/**
+ * @brief destroying course func.
+ * @param element course struct to destroy
+*/
 void course_destroy (void* element) {
 	course_t *cs_ptr = (course_t*)element;
 	free (cs_ptr->cs_name);
 	free (cs_ptr);
 }
-
-
-
 
 
 /**
@@ -100,12 +105,13 @@ int student_clone (void* element, void** output){
 		free (st_out);
 		return 1;
 	}
-	//tmp first iterator ptr
+	//iterator to the courses list
 	struct iterator* st_temp_cs_it=list_begin(st_temp_cs);
 	
+	//copy the course list
 	course_t *cs_node_copy=NULL;
 	while (st_temp_cs_it) {
-		course_clone(st_temp_cs_it,(void**)cs_node_copy); //???
+		course_clone(st_temp_cs_it,(void**)cs_node_copy); 
 		list_push_back(st_out->st_courses, cs_node_copy);
 		st_temp_cs_it=list_next(st_temp_cs_it);
 	}
@@ -114,6 +120,10 @@ int student_clone (void* element, void** output){
 	return 0;
 }
 
+/**
+ * @brief destroying st_grades func.
+ * @param element st_grades struct to destroy
+*/
 void student_destroy (void* element) {
 	st_grades_t* st_ptr = (st_grades_t*)element;
 	list_destroy(st_ptr->st_courses);
@@ -134,6 +144,7 @@ struct grades* grades_init() {
 		return NULL;
 	}
 	
+	//initialize student list
 	grades_main->grades_list=list_init(student_clone,student_destroy);
 	if(!(grades_main->grades_list)) {
 		free(grades_main);
@@ -151,11 +162,12 @@ void grades_destroy(struct grades *grades){
 	free (grades);
 }
 
-/**???
- * @brief Adds a student with "name" and "id" to "grades"
- * @returns 0 on success
- * @note Failes if "grades" is invalid, or a student with 
- * the same "id" already exists in "grades"
+/**
+ * @brief Finds a student with "id" in "grades"
+ * @param grades pointer to a grades stucture.
+ * @param id the id of the searched student.
+ * @returns pointer to the student or NULL if doesn't exist.
+ * @note Failes if "grades" is invalid.
  */
  st_grades_t* find_student(struct grades *grades, int id) { 
 	 if (grades == NULL){
@@ -181,7 +193,10 @@ void grades_destroy(struct grades *grades){
 
 /**
  * @brief Adds a student with "name" and "id" to "grades"
- * @returns 0 on success
+ * @param grades pointer to a grades stucture.
+ * @param name the course name.
+ * @param id the id of the student.
+ * @returns 0 on success, 1 on error
  * @note Failes if "grades" is invalid, or a student with 
  * the same "id" already exists in "grades"
  */
@@ -215,6 +230,7 @@ int grades_add_student(struct grades *grades, const char *name, int id){
 	}	
 	strcpy(st_new->name, name);
 
+	//initialize course list
 	st_new->st_courses=list_init (course_clone, course_destroy);
 	if (!(st_new->st_courses)) { 
 		free (st_new->name);
@@ -222,10 +238,11 @@ int grades_add_student(struct grades *grades, const char *name, int id){
 		return 1;
 	}
 	
-	int success = list_push_back(grades->grades_list, (void*)st_new);
+	//push new student to the end of grades
+	int failure = list_push_back(grades->grades_list, (void*)st_new);
 
-	student_destroy ((void*)st_new);
-	return success;
+	student_destroy ((void*)st_new); //free student
+	return failure;
 }
 
 /**
@@ -287,10 +304,10 @@ int grades_add_grade(struct grades *grades,
 	//update course_grade
 	cs_new->cs_grade = grade;
 
-	int success = list_push_back(student->st_courses, (void*)cs_new);
+	int failure = list_push_back(student->st_courses, (void*)cs_new);
 	course_destroy((void*)cs_new);
 
-	return success;
+	return failure;
  }
 
 /**
@@ -305,13 +322,9 @@ int grades_add_grade(struct grades *grades,
  * @note On error, sets "*out" to NULL.
  * @note "out" is a pointer to char*. Meaning, your function should
  * allocate memory on the heap and set "*out" to point on that memory.
- * This methodology (of returning values via pointers) is very common in C.
- * An example of C method that returns a value via pointer:
- * void foo(int *out) {
- *   *out = 1;  
- * }
  */
 float grades_calc_avg(struct grades *grades, int id, char **out){
+	*out = NULL; //initialize to NULL, in case of error
 	
 	//check if "grades" is valid
 	if(!(grades->grades_list)||!(grades)){
@@ -347,19 +360,19 @@ float grades_calc_avg(struct grades *grades, int id, char **out){
 	if(counter==0){
 		return 0.00;
 	}
-	else {
 	//calculate the sum of the student's grades
 	return sum/counter;	
-	}
 }
 
 /**
  * @brief Prints the courses of the student with "id" in the following format:
  * STUDENT-NAME STUDENT-ID: COURSE-1-NAME COURSE-1-GRADE, [...]
+ * @param grades pointer to a grades stucture.
+ * @param id the id of the student.
  * @returns 0 on success
  * @note Fails if "grades" is invalid, or if a student with "id" does not exist
  * in "grades".
- * @note The courses should be printed according to the order 
+ * @note The courses are printed according to the order 
  * in which they were inserted into "grades"
  */
 int grades_print_student(struct grades *grades, int id){
@@ -369,7 +382,7 @@ int grades_print_student(struct grades *grades, int id){
 		return 1;
 	}
 	
-	//find student with "id" in grade
+	//find student with "id" in grades
 	st_grades_t* student = find_student(grades,id);
 	//check if "id" doesn't exist in "grades" (ptr=null)
 	if(!(student)) {
@@ -382,17 +395,20 @@ int grades_print_student(struct grades *grades, int id){
 	
 	//print student grades
 	struct iterator* grade_itr = list_begin(student->st_courses);
-
+	
+	
+	//print all courses of the student
 	while(grade_itr) {
 		if(list_next(grade_itr)){
-		printf(" %s %d,", ((course_t*)list_get(grade_itr))->cs_name,
-		((course_t*)list_get(grade_itr))->cs_grade);
-		grade_itr=list_next(grade_itr);
+			printf(" %s %d,", ((course_t*)list_get(grade_itr))->cs_name,
+			((course_t*)list_get(grade_itr))->cs_grade);
+			grade_itr=list_next(grade_itr);
 		}
+		
 		else {
-		printf(" %s %d", ((course_t*)list_get(grade_itr))->cs_name,
-		((course_t*)list_get(grade_itr))->cs_grade);
-		grade_itr=list_next(grade_itr);
+			printf(" %s %d", ((course_t*)list_get(grade_itr))->cs_name,
+			((course_t*)list_get(grade_itr))->cs_grade);
+			grade_itr=list_next(grade_itr);
 		}
 	}
 
@@ -404,11 +420,12 @@ int grades_print_student(struct grades *grades, int id){
  * @brief Prints all students in "grade", in the following format:
  * STUDENT-1-NAME STUDENT-1-ID: COURSE-1-NAME COURSE-1-GRADE, [...]
  * STUDENT-2-NAME STUDENT-2-ID: COURSE-1-NAME COURSE-1-GRADE, [...]
- * @returns 0 on success
+ * @param grades pointer to a grades stucture.
+ * @returns 0 on success, 1 on error
  * @note Fails if "grades" is invalid
- * @note The students should be printed according to the order 
+ * @note The students are printed according to the order 
  * in which they were inserted into "grades"
- * @note The courses should be printed according to the order 
+ * @note The courses are printed according to the order 
  * in which they were inserted into "grades"
  */
 int grades_print_all(struct grades *grades){
@@ -421,7 +438,8 @@ int grades_print_all(struct grades *grades){
 	//print all the student in the list
 	struct iterator* student_itr = list_begin(grades->grades_list);
 	while(student_itr) {
-		if(grades_print_student(grades,((st_grades_t*)list_get(student_itr))->id)) {
+		if(grades_print_student
+			(grades,((st_grades_t*)list_get(student_itr))->id)) {
 			return 1;
 		}
 		student_itr=list_next(student_itr);
